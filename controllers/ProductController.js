@@ -15,9 +15,6 @@ module.exports.createProducts=async (req,res)=>{
 }
 
 module.exports.fetchAllProducts = async (req,res)=>{
-    // filter = {"category":["smartphone","laptops"]}
-    // sort = {_sort:"price",_order="desc or asc"}
-    // pagination = {_page:1,_limit=10}
 
     let allPrroducts = Product.find({deleted:{$ne:true}})
     let forCount =Product.find({})

@@ -8,6 +8,7 @@ const session = require('express-session')
 const passport =require('passport')
 const MongoStore =require('connect-mongo')
 const passportLocal =require('./config/passportLocal')
+const passportJwt   =require('./config/passportJwt')
 
 // <-----  FIRMWARE----->
 
@@ -46,7 +47,6 @@ const passportLocal =require('./config/passportLocal')
     
 //  Routes
         app.use('/',require('./routes'))
-        
 
 //  SERVER LISTENING
 app.listen(process.env.PORT,(err)=>{

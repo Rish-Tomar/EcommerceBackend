@@ -1,16 +1,46 @@
 const { User } = require("../models/User")
+const crypto =require('crypto')
+
+
+// module.exports.createUser =async (req,res)=>{
+//     console.log("...",req.body)
+//     try{
+//         const user = await User.create(req.body)
+//         res.status(200).json(user)
+//     }catch(err){
+//         res.status(400).json({
+//             message:"error creating User",
+//             err
+//         })
+//     }
+// }
 
 module.exports.createUser =async (req,res)=>{
-    console.log("...",req.body)
-    try{
-        const user = await User.create(req.body)
-        res.status(200).json(user)
-    }catch(err){
-        res.status(400).json({
-            message:"error creating User",
-            err
-        })
-    }
+   try{
+    const salt = crypto.randomBytes(16);
+    crypto.pbkdf2(
+        req.body.password,
+        salt,
+        310000,
+        32,
+        'sha256',
+        async function(err, hashedPassword) {
+            if (err) { return next(err); }
+            const newUser = await User.create({...req.body,password:hashedPassword,salt})
+            if(newUser){
+                req.login(newUser, function(err) {
+                    if (err) { 
+                        res.status(400).json(err) 
+                    }else{
+                        res.status(201).json({id:newUser.id,role:newUser.role})
+                    }
+                });
+            }
+        }
+    )
+   }catch(err){
+    res.status(400).json(err)
+   }
 }
 
 // module.exports.loginUser1 =async (req,res)=>{
@@ -40,23 +70,16 @@ module.exports.createUser =async (req,res)=>{
 // }
 
 module.exports.loginUser =async (req,res)=>{
-        const user = await User.findOne({email:req.body.email}) 
-        
-                // res.status(201).json({
-                //     name:user.name,
-                //     email:user.email,
-                //     id:user.id,
-                //     addresses:user.addresses,
-                //     orders:user.orders
-                // })   
+        const user = await User.findOne({email:req.body.email})  
                 res.status(201).json({                   
                     id:user.id,
                     role:user.role
-                })     
+                })
+        // res.status(201).json(req.user)
 }
 
 module.exports.checkUserr =(req,res)=>{
-   try{ console.log('check user',req.user.id)
+   try{ console.log('check user',req.user)
     res.status(201).json(req.user)}
     catch(err){
         res.status(401).json(err)
