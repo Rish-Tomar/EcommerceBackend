@@ -4,5 +4,5 @@ const passport = require("passport");
 
 Router =express.Router()
 
-Router.get('/check',checkUserr)
+Router.get('/check',passport.authenticate('jwt'),checkUserr)
 module.exports = Router

@@ -1,6 +1,7 @@
+const jwt = require("jsonwebtoken");
 const { User } = require("../models/User")
 const crypto =require('crypto')
-
+const SECRET_Key ='SECRET_KEY'
 
 // module.exports.createUser =async (req,res)=>{
 //     console.log("...",req.body)
@@ -31,8 +32,9 @@ module.exports.createUser =async (req,res)=>{
                 req.login(newUser, function(err) {
                     if (err) { 
                         res.status(400).json(err) 
-                    }else{
-                        res.status(201).json({id:newUser.id,role:newUser.role})
+                    }else{     
+                        const token = jwt.sign({id:newUser.id,role:newUser.role}, SECRET_Key);
+                        res.status(201).json(token)
                     }
                 });
             }
@@ -70,17 +72,17 @@ module.exports.createUser =async (req,res)=>{
 // }
 
 module.exports.loginUser =async (req,res)=>{
-        const user = await User.findOne({email:req.body.email})  
-                res.status(201).json({                   
-                    id:user.id,
-                    role:user.role
-                })
-        // res.status(201).json(req.user)
+        // const user = await User.findOne({email:req.body.email})  
+        //         res.status(201).json({                   
+        //             id:user.id,
+        //             role:user.role
+        //         })
+        res.status(201).json(req.user)
 }
 
 module.exports.checkUserr =(req,res)=>{
    try{ console.log('check user',req.user)
-    res.status(201).json(req.user)}
+    res.status(201).json({status:"success",user:req.user})}
     catch(err){
         res.status(401).json(err)
     }

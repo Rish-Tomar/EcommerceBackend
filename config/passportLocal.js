@@ -1,7 +1,9 @@
 const passport = require('passport');
 const { User } = require('../models/User');
 const LocalStrategy= require('passport-local').Strategy;
-const crypto =require('crypto')
+const crypto =require('crypto');
+const jwt = require('jsonwebtoken');
+const SECRET_Key ='SECRET_KEY'
 
 //authentication using passport
 passport.use(new LocalStrategy({
@@ -18,11 +20,11 @@ passport.use(new LocalStrategy({
         }
 
         crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-            if (err) { return done(err); }
             if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
               return done(null, false, { message: 'Incorrect username or password.' });
             }
-            return done(null,user); //this line calls serializer
+            const token = jwt.sign({id:user.id,role:user.role}, SECRET_Key);
+            return done(null,token); //this line calls serializer
           });
        }catch(err){
         console.log(err)
@@ -32,14 +34,9 @@ passport.use(new LocalStrategy({
 
 //serialize the user, decide the key to be set in cookie
 passport.serializeUser(function(user,done){
+    // console.log('serialise user',user)
     process.nextTick(()=>{
-        return done(null,{id:user.id,
-                          role:user.role,
-                          addresses:user.addresses,
-                          orders:user.orders,
-                          email:user.email,
-                          name:user.name})
-        // return done(null,user.id)
+        return done(null,user)
     })
 })
 
