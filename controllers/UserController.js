@@ -3,8 +3,9 @@ const { User } = require("../models/User")
 
 
 module.exports.fetchUserById =async (req,res)=>{
+    const {id}=req.user
     try{
-        const user= await User.findById(req.params.id,'name email addresses orders')
+        const user= await User.findById(id,'name email addresses orders')
         res.status(200).json(user)
 
     }catch(err){

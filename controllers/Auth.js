@@ -34,6 +34,7 @@ module.exports.createUser =async (req,res)=>{
                         res.status(400).json(err) 
                     }else{     
                         const token = jwt.sign({id:newUser.id,role:newUser.role}, SECRET_Key);
+                        res.cookie('jwt',token)
                         res.status(201).json(token)
                     }
                 });
@@ -77,6 +78,7 @@ module.exports.loginUser =async (req,res)=>{
         //             id:user.id,
         //             role:user.role
         //         })
+        res.cookie('jwt',req.user)
         res.status(201).json(req.user)
 }
 

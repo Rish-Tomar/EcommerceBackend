@@ -9,6 +9,7 @@ const passport =require('passport')
 const MongoStore =require('connect-mongo')
 const passportLocal =require('./config/passportLocal')
 const passportJwt   =require('./config/passportJwt')
+const cookieParser = require('cookie-parser')
 
 // <-----  FIRMWARE----->
 
@@ -17,6 +18,9 @@ const passportJwt   =require('./config/passportJwt')
         app.use(express.urlencoded({extended:false}))
 
 //  .......... Middlewares
+        app.use(express.static("build"))
+        
+        app.use(cookieParser())
         app.use(cors({
             exposedHeaders:['X-Total-Count']
         }))
@@ -40,10 +44,11 @@ const passportJwt   =require('./config/passportJwt')
             //       }
             // )
         }))
-  
+        
         app.use(passport.initialize())
         app.use(passport.session())
         app.use(passport.setAuthenticatedUser)
+
     
 //  Routes
         app.use('/',require('./routes'))

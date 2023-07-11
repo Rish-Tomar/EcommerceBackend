@@ -1,10 +1,10 @@
 const { Order } = require("../models/Order")
 
 module.exports.fetchOrdersByUser =async(req,res)=>{
-    const {user}=req.query
+    const {id}=req.user
     try{
-        console.log('orderController/fetchOrderByuser',req.query.user)
-        const orders =await Order.find({user:user})
+        console.log('orderController/fetchOrderByuser',id)
+        const orders =await Order.find({user:id})
         console.log('Orders',orders)
         res.status(200).json(orders)
     }catch(err){
@@ -16,10 +16,11 @@ module.exports.fetchOrdersByUser =async(req,res)=>{
 module.exports.createOrder=async(req,res)=>{
     console.log("createOrder/OrederController",req.body)
     try{
-        const order =await Order.create(req.body)
+        const {id}= req.user
+        const order =await Order.create({...req.body,user:id})
         res.status(200).json(order)
     }catch(err){
-        console.log("yaha tak to aya")
+        console.log("yaha tak to aya",err)
         res.status(400).json(err)
     }
 }
