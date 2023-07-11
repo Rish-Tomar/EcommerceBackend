@@ -23,7 +23,7 @@ passport.use(new LocalStrategy({
             if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
               return done(null, false, { message: 'Incorrect username or password.' });
             }
-            const token = jwt.sign({id:user.id,role:user.role}, SECRET_Key);
+            const token = jwt.sign({id:user.id,role:user.role}, SECRET_Key,{expiresIn:'100000'});
             return done(null,token); //this line calls serializer
           });
        }catch(err){

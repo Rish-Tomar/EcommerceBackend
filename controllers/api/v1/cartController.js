@@ -1,4 +1,4 @@
-const { Cart } = require("../models/Cart")
+const { Cart } = require("../../../models/Cart")
 
 module.exports.addToCart =async(req,res)=>{
     const {id}=req.user
@@ -36,7 +36,10 @@ module.exports.fetchCartByUser =async(req,res)=>{
     const {id} = req.user
     try{
     const cartItems =await Cart.find({user:id})  
-        .populate('product') 
+        .populate('product')    // key value inside cart is product not Product, 
+                                // we are not using any information of user so no need to populate user
+
+    // console.log('cart fetched',cartItems)
     res.status(200).json(cartItems)
     }catch(err){
      res.status(402).json(err)

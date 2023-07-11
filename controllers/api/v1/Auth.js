@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../models/User")
-const crypto =require('crypto')
+const crypto =require('crypto');
+const { User } = require("../../../models/User");
 const SECRET_Key ='SECRET_KEY'
-
 
 module.exports.createUser =async (req,res)=>{
    try{
@@ -46,15 +45,6 @@ module.exports.checkUserr =(req,res)=>{
     res.status(201).json({status:"success",user:req.user})}
     catch(err){
         res.status(401).json(err)
-    }
-}
-
-module.exports.checkifLoggedIn=async (req,res)=>{
-    if(req.user){
-        console.log(req.user)
-        res.json(req.user)
-    }else{
-        res.sendStatus(401)
     }
 }
 

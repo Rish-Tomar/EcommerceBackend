@@ -35,14 +35,14 @@ const cookieParser = require('cookie-parser')
             },
             //do not use new keyword, it will throw error 
             //refer to :: "https://stackoverflow.com/questions/66398388/typeerror-mongostore-is-not-a-constructor"
-            // store:MongoStore.create({
-            //         mongoUrl:'mongodb+srv://admin:rootrootrt@app1.shxgdxt.mongodb.net/?retryWrites=true&w=majority',
-            //         autoRemove:'disabled'
-            //       },
-            //       function(err){
-            //          console.log(err ||'Connected to mongostore db');
-            //       }
-            // )
+            store: MongoStore.create({
+                    mongoUrl:'mongodb+srv://admin:rootrootrt@app1.shxgdxt.mongodb.net/?retryWrites=true&w=majority',
+                    autoRemove:'disabled'
+                  },
+                  function(err){
+                     console.log(err ||'Connected to mongostore db');
+                  }
+            )
         }))
         
         app.use(passport.initialize())

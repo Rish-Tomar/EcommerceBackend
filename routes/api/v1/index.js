@@ -1,5 +1,4 @@
 const express =require('express')
-const { createProducts } = require('../controllers/ProductController')
 const passport = require('passport')
 
 const Router=express.Router()
@@ -20,11 +19,7 @@ Router.use('/users'  ,require('./User'))
 Router.use('/cart'   ,require('./cart'))
 Router.use('/auth'   ,require('./Auth'))
 Router.use('/orders' ,require('./Order'))
-
-//routes to call all routes related to api/v1
-
-Router.use('/api',require('./api'))
-
+// Router.post('/create-products',createProducts)
 
 module.exports = Router
 

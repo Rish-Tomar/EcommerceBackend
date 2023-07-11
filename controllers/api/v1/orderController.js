@@ -1,4 +1,4 @@
-const { Order } = require("../models/Order")
+const { Order } = require("../../../models/Order")
 
 module.exports.fetchOrdersByUser =async(req,res)=>{
     try{

@@ -16,9 +16,7 @@ passport.use('jwt',new JwtStrategy(opts, async function(jwt_payload, done) {
     console.log("././...",{jwt_payload})
     try{
         console.log('jwt_sub',jwt_payload.sub)
-        console.log('jwt_id',jwt_payload.id)
-        // const user = await User.findOne({id: jwt_payload.sub})
-        
+        console.log('jwt_id',jwt_payload.id)        
         const user = await User.findById(jwt_payload.id)
         if (user) {
             console.log("PASSPOSRT JWT Line :23",user)
@@ -33,3 +31,19 @@ passport.use('jwt',new JwtStrategy(opts, async function(jwt_payload, done) {
         }
     }   
 }));
+
+//serialize the user, decide the key to be set in cookie
+passport.serializeUser(function(user,done){
+    // console.log('serialise user',user)
+    process.nextTick(()=>{
+        return done(null,user)
+    })
+})
+
+//desearialize user key to user identification by populating user
+passport.deserializeUser(function(user,done){
+    process.nextTick(()=>{
+        console.log("Deserialise user", user)
+        return done(null,user)
+    })
+})
