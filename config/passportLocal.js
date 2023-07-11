@@ -3,7 +3,7 @@ const { User } = require('../models/User');
 const LocalStrategy= require('passport-local').Strategy;
 const crypto =require('crypto');
 const jwt = require('jsonwebtoken');
-const SECRET_Key ='SECRET_KEY'
+const SECRET_Key =process.env.SECRET_KEY_JWT
 
 //authentication using passport
 passport.use(new LocalStrategy({
@@ -12,7 +12,6 @@ passport.use(new LocalStrategy({
     //finding user establish identity
     async function(email,password,done){
        try{
-        console.log("Varifying")
         const user=await User.findOne({email:email});
         if(!user){
             console.log('user not found')
@@ -43,7 +42,7 @@ passport.serializeUser(function(user,done){
 //desearialize user key to user identification by populating user
 passport.deserializeUser(function(user,done){
     process.nextTick(()=>{
-        console.log("Deserialise user", user)
+        // console.log("Deserialise user", user)
         return done(null,user)
     })
 })

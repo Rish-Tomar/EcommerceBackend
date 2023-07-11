@@ -10,6 +10,7 @@ const MongoStore =require('connect-mongo')
 const passportLocal =require('./config/passportLocal')
 const passportJwt   =require('./config/passportJwt')
 const cookieParser = require('cookie-parser')
+const path =require('path')
 
 // <-----  FIRMWARE----->
 
@@ -18,8 +19,9 @@ const cookieParser = require('cookie-parser')
         app.use(express.urlencoded({extended:false}))
 
 //  .......... Middlewares
-        app.use(express.static("build"))
-        
+
+        // app.use(express.static("build"))
+        app.use(express.static(path.resolve(__dirname,'build')))
         app.use(cookieParser())
         app.use(cors({
             exposedHeaders:['X-Total-Count']
@@ -27,7 +29,7 @@ const cookieParser = require('cookie-parser')
 
         app.use(session({
             name:'user',
-            secret:'qwerty12345',
+            secret:process.env.SESSION_KEY,
             saveUninitialized:false,
             resave:false,
             cookie:{
@@ -35,14 +37,14 @@ const cookieParser = require('cookie-parser')
             },
             //do not use new keyword, it will throw error 
             //refer to :: "https://stackoverflow.com/questions/66398388/typeerror-mongostore-is-not-a-constructor"
-            store: MongoStore.create({
-                    mongoUrl:'mongodb+srv://admin:rootrootrt@app1.shxgdxt.mongodb.net/?retryWrites=true&w=majority',
-                    autoRemove:'disabled'
-                  },
-                  function(err){
-                     console.log(err ||'Connected to mongostore db');
-                  }
-            )
+            // store: MongoStore.create({
+            //         mongoUrl:'mongodb+srv://admin:rootrootrt@app1.shxgdxt.mongodb.net/?retryWrites=true&w=majority',
+            //         autoRemove:'disabled'
+            //       },
+            //       function(err){
+            //          console.log(err ||'Connected to mongostore db');
+            //       }
+            // )
         }))
         
         app.use(passport.initialize())

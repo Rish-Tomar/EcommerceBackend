@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const user=process.env.MONGODB_USER
-mongoose.connect(`mongodb+srv://${user}:rootrootrt@app1.shxgdxt.mongodb.net/?retryWrites=true&w=majority`)
+mongoose.connect(process.env.MONGODB_URL)
 
 const db =mongoose.connection;
 
